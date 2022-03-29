@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OperationController;
+use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\TransactionDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+Route::resource('operations', OperationController::class);
+Route::resource('transactions', TransactionsController::class);
+Route::resource('transdashboard', TransactionDashboardController::class);
+require __DIR__ . '/auth.php';
