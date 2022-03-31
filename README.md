@@ -9,6 +9,8 @@
 
 ## Installation
 
+La branche concerné est la branche master.
+
 L'installation des dépendances se fait via composer
 
 ## Lancement
