@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-11">
-        <h2>Laravel 9 CRUD Example</h2>
+    <div class="col-lg-10">
+        <h2>Détails</h2>
     </div>
     <div class="col-lg-1">
-        <a class="btn btn-primary" href="{{ url('transactions') }}"> Back</a>
+        <a class="btn btn-sm btn-primary" href="{{ url('transactions') }}"> Retour</a>
     </div>
 </div>
 <table class="table table-bordered">

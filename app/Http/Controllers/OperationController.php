@@ -53,7 +53,7 @@ class OperationController extends Controller
         ]);
 
         $operation->save();
-        return redirect('/operations')->with('success', 'operationType has been added');
+        return redirect('/operations')->with('success', 'Le type d\'opération a été ajouté avec succès');
     }
 
     /**
@@ -101,7 +101,7 @@ class OperationController extends Controller
 
         $operation->update();
 
-        return redirect('/operations')->with('success', 'operationType updated successfully');
+        return redirect('/operations')->with('success', 'Le type d\'opération a été modifié avec succès');
     }
 
     /**
@@ -114,6 +114,6 @@ class OperationController extends Controller
     {
         //
         $operation->delete();
-        return redirect('/operations')->with('success', 'operationType deleted successfully');
+        return redirect('/operations')->with('success', 'Le type d\'opération a été supprimé avec succès');
     }
 }

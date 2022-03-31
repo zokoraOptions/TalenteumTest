@@ -24,71 +24,6 @@ class TransactionDashboardController extends TransactionsController
         return view('transactionsDashboard.list', compact('transactions', 'transactions'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     private function groupTransaction(Collection $collection)
     {
         $operationTypes = $this->formatOperationType();
@@ -99,28 +34,38 @@ class TransactionDashboardController extends TransactionsController
             $transactionGroupped[$transaction->operation_date][$operationType->type][] = $transaction;
         }
         $formatted = [];
-        dump($transactionGroupped);
         foreach ($transactionGroupped as $key => $transactionByType) {
+            $trans = [];
             $formatted[$key] = [
                 'date' => date('d/m/Y', strtotime($key)),
                 'credit' => 0,
                 'debit' => 0,
                 'total' => 0,
-                // 'id' => 0,
             ];
             if (!empty($transactionByType['retrait'])) {
                 foreach ($transactionByType['retrait'] as $transactions) {
                     $formatted[$key]['credit'] += $transactions->total;
+                    $formatted[$key]['list'][] = [
+                        'type' => $operationTypes[$transactions->id_type]->label,
+                        'credit' => $transactions->total,
+                        'debit' => 0,
+                        'id' => $transactions->id
+                    ];
                 }
             }
             if (!empty($transactionByType['ajout'])) {
                 foreach ($transactionByType['ajout'] as $transactions) {
                     $formatted[$key]['debit'] += $transactions->total;
+                    $formatted[$key]['list'][] = [
+                        'type' => $operationTypes[$transactions->id_type]->label,
+                        'credit' => 0,
+                        'debit' => $transactions->total,
+                        'id' => $transactions->id
+                    ];
                 }
             }
             $formatted[$key]['total'] += $formatted[$key]['debit'] + $formatted[$key]['credit'];
         }
-        dump($formatted);
         return $formatted;
     }
 }

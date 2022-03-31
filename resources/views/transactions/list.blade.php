@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-11">
-        <h2>Liste des types d'opérations</h2>
+    <div class="col-lg-10">
+        <h2>Liste des opérations</h2>
     </div>
     <div class="col-lg-1">
-        <a class="btn btn-success" href="{{ route('transactions.create') }}">Add</a>
+        <a class="btn btn-sm btn-success" href="{{ route('transactions.create') }}">Ajouter</a>
     </div>
 </div>
 
@@ -37,11 +37,11 @@
         <td>{{ $transaction->total }} €</td>
         <td>
             <form action="{{ route('transactions.destroy',$transaction->id) }}" method="POST">
-                <a class="btn btn-info" href="{{ route('transactions.show',$transaction->id) }}">Show</a>
-                <a class="btn btn-primary" href="{{ route('transactions.edit',$transaction->id) }}">Edit</a>
+                <a class="btn btn-sm btn-info" href="{{ route('transactions.show',$transaction->id) }}">Afficher</a>
+                <a class="btn btn-sm btn-primary" href="{{ route('transactions.edit',$transaction->id) }}">Modifier</a>
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
             </form>
         </td>
     </tr>

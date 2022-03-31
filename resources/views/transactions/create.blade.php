@@ -2,17 +2,17 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-11">
-        <h2>Add New transactions</h2>
+    <div class="col-lg-10">
+        <h2>Ajout de transactions</h2>
     </div>
     <div class="col-lg-1">
-        <a class="btn btn-primary" href="{{ url('transactions') }}"> Back</a>
+        <a class="btn btn-sm btn-primary" href="{{ url('transactions') }}"> Retour</a>
     </div>
 </div>
 
 @if ($errors->any())
 <div class="alert alert-danger">
-    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+    Un des champs n'est pas correctement renseigné.<br><br>
     <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
@@ -76,7 +76,7 @@
         </div>
     </div>
     <div class="form-group">
-        <button class="add_billet">Ajouter</button>
+        <button class="add_billet btn btn-sm btn-primary">Ajouter</button>
         <div>
             <table class="billets_list table">
                 <tbody></tbody>
@@ -105,7 +105,7 @@
         </div>
     </div>
     <div class="form-group">
-        <button class="add_piece">Ajouter</button>
+        <button class="add_piece btn btn-sm btn-primary">Ajouter</button>
         <div>
             <table class="pieces_list table">
                 <tbody></tbody>
@@ -138,7 +138,7 @@
         </div>
     </div>
     <div class="form-group">
-        <button class="add_centime">Ajouter</button>
+        <button class="add_centime btn btn-sm btn-primary">Ajouter</button>
         <div>
             <table class="centimes_list table">
                 <tbody></tbody>
@@ -162,7 +162,7 @@
             </table>
         </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-sm btn-default">Sauvegarder</button>
 </form>
 <script type="text/javascript">
     var moneyList = {

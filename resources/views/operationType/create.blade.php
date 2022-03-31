@@ -2,17 +2,17 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-11">
-        <h2>Add New operationType</h2>
+    <div class="col-lg-10">
+        <h2>Ajout de types d'opérations</h2>
     </div>
     <div class="col-lg-1">
-        <a class="btn btn-primary" href="{{ url('operations') }}"> Back</a>
+        <a class="btn btn-sm btn-primary" href="{{ url('operations') }}"> Retour</a>
     </div>
 </div>
 
 @if ($errors->any())
 <div class="alert alert-danger">
-    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+    Un des champs n'est pas correctement renseigné.<br><br>
     <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
@@ -31,6 +31,6 @@
         <input type="radio" name="type" id="typecredit" value="retrait"> Retrait
         <input type="radio" name="type" id="typedebit" value="ajout"> Ajout
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-sm btn-default">Sauvegarder</button>
 </form>
 @endsection

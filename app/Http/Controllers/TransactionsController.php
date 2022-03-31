@@ -26,7 +26,7 @@ class TransactionsController extends Controller
     public function index()
     {
         //
-        $transactions = BankTransactions::all();
+        $transactions = BankTransactions::orderBy('operation_date', 'desc')->get();
         $operationTypes = $this->formatOperationType();
         return view('transactions.list', compact('transactions', 'transactions', 'operationTypes'));
     }
@@ -51,40 +51,16 @@ class TransactionsController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'id_type' => 'required',
-            'operation_date' => 'required',
-        ]);
-        // exit;
-        $total = 0;
-        $billets = $request->get('real_billet');
-        if (!empty($billets)) {
-            foreach ($billets as $billet => $qty) {
-                $total += $billet * $qty;
-            }
-        }
-        $pieces = $request->get('real_piece');
-        if (!empty($pieces)) {
-            foreach ($pieces as $piece => $qty) {
-                $total += $piece * $qty;
-            }
-        }
-        $centimes = $request->get('real_centime');
-        if (!empty($centimes)) {
-            foreach ($centimes as $centime => $qty) {
-                $total += $centime * $qty / self::PERCENT;
-            }
-        }
+        $total = $this->getTotal($request);
         $transaction = new BankTransactions([
             'id_type' => $request->get('id_type'),
             'operation_date' => $this->dateToEn($request->get('operation_date')),
             'note' => (empty($request->get('note')) ? ' ' : $request->get('note')),
             'total' => $total
         ]);
-        dump($transaction);
         $transaction = $transaction->save();
 
-        return redirect('/transactions')->with('success', 'BankTransactions has been added');
+        return redirect('/transactions')->with('success', 'La transaction été enregistré avec succès');
     }
 
     /**
@@ -108,8 +84,8 @@ class TransactionsController extends Controller
      */
     public function edit(BankTransactions $transaction)
     {
-        //
-        return view('transactions.edit', compact('transaction'));
+        $types = OperationType::all();
+        return view('transactions.edit', compact('transaction', 'types'));
     }
 
     /**
@@ -121,19 +97,17 @@ class TransactionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
 
-        $request->validate([
-            'label' => 'required'
-        ]);
-
-
+        $total = $this->getTotal($request);
         $transaction = BankTransactions::find($id);
-        $transaction->label = $request->get('label');
+        $transaction->id_type = $request->get('id_type');
+        $transaction->operation_date = $this->dateToEn($request->get('operation_date'));
+        $transaction->note = $this->dateToEn($request->get('note'));
+        $transaction->total = $total;
 
         $transaction->update();
 
-        return redirect('/transactions')->with('success', 'BankTransactions updated successfully');
+        return redirect('/transactions')->with('success', 'La transaction été enregistré avec succès');
     }
 
     /**
@@ -146,7 +120,7 @@ class TransactionsController extends Controller
     {
         //
         $transaction->delete();
-        return redirect('/transactions')->with('success', 'BankTransactions deleted successfully');
+        return redirect('/transactions')->with('success', 'La transaction été supprimé avec succès');
     }
 
     /**
@@ -189,5 +163,39 @@ class TransactionsController extends Controller
             $operations[$operationType->id] = $operationType;
         }
         return $operations;
+    }
+    /**
+     * Récupérer le total
+     *
+     * @param Request $request
+     *
+     * @return float
+     */
+    public function getTotal(Request $request)
+    {
+        $request->validate([
+            'id_type' => 'required',
+            'operation_date' => 'required',
+        ]);
+        $total = 0;
+        $billets = $request->get('real_billet');
+        if (!empty($billets)) {
+            foreach ($billets as $billet => $qty) {
+                $total += $billet * $qty;
+            }
+        }
+        $pieces = $request->get('real_piece');
+        if (!empty($pieces)) {
+            foreach ($pieces as $piece => $qty) {
+                $total += $piece * $qty;
+            }
+        }
+        $centimes = $request->get('real_centime');
+        if (!empty($centimes)) {
+            foreach ($centimes as $centime => $qty) {
+                $total += $centime * $qty / self::PERCENT;
+            }
+        }
+        return $total;
     }
 }
